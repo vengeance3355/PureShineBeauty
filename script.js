@@ -4,10 +4,10 @@ const loader = document.querySelector("[data-loader]");
 const chapters = Array.from(document.querySelectorAll("[data-chapter]"));
 const revealItems = Array.from(document.querySelectorAll("[data-reveal]"));
 const navItems = Array.from(document.querySelectorAll("[data-nav]"));
-const serviceNodes = Array.from(document.querySelectorAll(".service-node"));
-const ritualItems = Array.from(document.querySelectorAll(".ritual-sequence article"));
-const signalItems = Array.from(document.querySelectorAll(".signal-grid article"));
-const heroVisual = document.querySelector(".stage-visual");
+const serviceRows = Array.from(document.querySelectorAll(".service-row"));
+const methodSteps = Array.from(document.querySelectorAll(".method-step"));
+const metricCards = Array.from(document.querySelectorAll(".metric-card"));
+const motionMedia = Array.from(document.querySelectorAll(".editorial-visual figure, .route-visual, .proof-visual"));
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const state = {
@@ -46,29 +46,25 @@ function updateActiveNav(stage) {
 function updateDomMotion() {
   if (reducedMotion) return;
 
-  if (heroVisual) {
-    const lift = -34 * state.progress;
-    const tilt = -2.5 + state.progress * 5;
-    heroVisual.style.setProperty("--hero-lift", `${lift.toFixed(2)}px`);
-    heroVisual.style.setProperty("--hero-tilt", `${tilt.toFixed(2)}deg`);
-  }
-
-  serviceNodes.forEach((card, index) => {
-    const active = proximityToViewport(card, 0.56, 1.45);
-    const wave = Math.sin(state.progress * Math.PI * 8 + index) * 3;
-    card.style.setProperty("--lift", `${(-30 * active + wave).toFixed(2)}px`);
-    card.style.setProperty("--tilt", `${(3 - active * 6).toFixed(2)}deg`);
+  serviceRows.forEach((row, index) => {
+    const active = proximityToViewport(row, 0.58, 1.5);
+    const direction = index % 2 === 0 ? -1 : 1;
+    row.style.setProperty("--slide", `${(direction * active * 18).toFixed(2)}px`);
   });
 
-  ritualItems.forEach((item, index) => {
+  methodSteps.forEach((item, index) => {
     const active = proximityToViewport(item, 0.6, 1.6);
-    item.style.setProperty("--lift", `${(-24 * active).toFixed(2)}px`);
-    item.style.setProperty("--tilt", `${(2 - active * 4 + index * 0.2).toFixed(2)}deg`);
+    item.style.setProperty("--lift", `${(-24 * active + index * 2).toFixed(2)}px`);
   });
 
-  signalItems.forEach((item, index) => {
+  metricCards.forEach((item, index) => {
     const active = proximityToViewport(item, 0.6, 1.7);
     item.style.setProperty("--lift", `${(-22 * active + index * 2).toFixed(2)}px`);
+  });
+
+  motionMedia.forEach((item, index) => {
+    const active = proximityToViewport(item, 0.52, 1.2);
+    item.style.setProperty("--media-lift", `${(-30 * active + index * 2).toFixed(2)}px`);
   });
 }
 
@@ -138,7 +134,7 @@ function initGsapEnhancements() {
 
   window.gsap.registerPlugin(window.ScrollTrigger);
 
-  window.gsap.utils.toArray(".chapter-copy, .chapter-heading").forEach((block) => {
+  window.gsap.utils.toArray(".section-title, .contact-copy, .location-card").forEach((block) => {
     window.gsap.fromTo(
       block,
       { y: 40 },
@@ -155,7 +151,7 @@ function initGsapEnhancements() {
     );
   });
 
-  window.gsap.utils.toArray(".stage-visual, .service-visual, .location-visual, .social-visual").forEach((item) => {
+  window.gsap.utils.toArray(".editorial-visual figure, .services-aside, .route-visual, .proof-visual").forEach((item) => {
     window.gsap.fromTo(
       item,
       { scale: 0.965 },

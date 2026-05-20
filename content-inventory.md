@@ -16,7 +16,7 @@ Primary goal: use publicly available information to build a high-quality Turkish
 
 - Business name: Pure Shine Beauty & Aesthetics
 - Instagram username: `@pureshinebeauty`
-- Instagram profile signal: `3,610` followers, `139` following, `2,039` posts
+- Instagram profile signal: `3,610` takipci, `139` takip edilen hesap, `2,039` gonderi
 - Instagram category/bio line: `Guzellik, Kozmetik ve Kisisel Bakim`
 - Instagram linked accounts in bio: `@melis.mstf`, `@orena.accessories`, `@orena.candle`
 - Phone from Instagram and directory listings: `0507 377 67 22`
