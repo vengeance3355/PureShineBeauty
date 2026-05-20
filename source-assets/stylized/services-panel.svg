@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 850" role="img" aria-labelledby="title desc">
+  <title id="title">Stylized beauty service modules</title>
+  <desc id="desc">A non-photographic composition of service trays, fine lines, and pearl-gold surfaces.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff7ee"/>
+      <stop offset=".55" stop-color="#eee0d2"/>
+      <stop offset="1" stop-color="#211317"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8c244f"/>
+      <stop offset=".45" stop-color="#c8a065"/>
+      <stop offset="1" stop-color="#fffaf2"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="850" fill="url(#bg)"/>
+  <path d="M88 250c210-132 408-142 594-30 176 106 300 112 430 18" fill="none" stroke="#8c244f" stroke-width="6" opacity=".45"/>
+  <path d="M92 638c188-92 372-102 552-30 198 78 348 60 462-60" fill="none" stroke="#c8a065" stroke-width="8" opacity=".62"/>
+  <g stroke="url(#edge)" stroke-width="4" fill="rgba(255,250,242,.62)">
+    <rect x="130" y="150" width="230" height="330" rx="40"/>
+    <rect x="410" y="104" width="350" height="460" rx="52"/>
+    <rect x="812" y="168" width="250" height="320" rx="42"/>
+    <rect x="250" y="552" width="300" height="150" rx="34"/>
+    <rect x="620" y="584" width="350" height="116" rx="32"/>
+  </g>
+  <g fill="none" stroke="#201216" stroke-linecap="round" opacity=".64">
+    <path d="M184 236h118M184 284h82M184 332h140"/>
+    <path d="M482 198h206M482 260h140M482 322h196M482 384h112"/>
+    <path d="M876 250h118M876 300h78M876 350h132"/>
+    <path d="M314 624h176M684 644h220"/>
+  </g>
+  <g fill="#8c244f" opacity=".72">
+    <rect x="174" y="402" width="120" height="12" rx="6"/>
+    <rect x="498" y="462" width="196" height="14" rx="7"/>
+    <rect x="880" y="410" width="128" height="12" rx="6"/>
+  </g>
+</svg>

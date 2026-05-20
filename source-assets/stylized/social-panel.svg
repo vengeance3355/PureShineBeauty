@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Stylized social proof visual</title>
+  <desc id="desc">A non-photographic editorial social grid inspired by Instagram profile signals.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7efe6"/>
+      <stop offset=".52" stop-color="#d8c3b5"/>
+      <stop offset="1" stop-color="#27161d"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8c244f"/>
+      <stop offset=".5" stop-color="#c8a065"/>
+      <stop offset="1" stop-color="#fffaf2"/>
+    </linearGradient>
+  </defs>
+  <rect width="1000" height="1000" fill="url(#bg)"/>
+  <rect x="116" y="118" width="768" height="764" rx="72" fill="rgba(255,250,242,.52)" stroke="url(#line)" stroke-width="5"/>
+  <g fill="none" stroke="#27161d" stroke-width="4" opacity=".4">
+    <path d="M196 292h608M196 500h608M196 708h608M398 208v580M602 208v580"/>
+  </g>
+  <g fill="#8c244f" opacity=".78">
+    <rect x="196" y="208" width="122" height="122" rx="28"/>
+    <rect x="438" y="346" width="124" height="124" rx="28"/>
+    <rect x="682" y="586" width="122" height="122" rx="28"/>
+  </g>
+  <g fill="#c8a065" opacity=".78">
+    <rect x="438" y="208" width="124" height="122" rx="28"/>
+    <rect x="682" y="346" width="122" height="124" rx="28"/>
+    <rect x="196" y="586" width="122" height="122" rx="28"/>
+  </g>
+  <g fill="#fffaf2" opacity=".72">
+    <rect x="682" y="208" width="122" height="122" rx="28"/>
+    <rect x="196" y="346" width="122" height="124" rx="28"/>
+    <rect x="438" y="586" width="124" height="122" rx="28"/>
+  </g>
+  <text x="188" y="824" fill="#27161d" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="900">3.610 FOLLOWERS</text>
+</svg>

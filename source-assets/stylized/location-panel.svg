@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 850" role="img" aria-labelledby="title desc">
+  <title id="title">Stylized Nilufer Lotus Ofis route visual</title>
+  <desc id="desc">A non-photographic route composition with metro-line inspired paths and a gold destination mark.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#100b0e"/>
+      <stop offset=".6" stop-color="#24161c"/>
+      <stop offset="1" stop-color="#a74767"/>
+    </linearGradient>
+    <linearGradient id="route" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fffaf2"/>
+      <stop offset=".45" stop-color="#c8a065"/>
+      <stop offset="1" stop-color="#d76f91"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="850" fill="url(#bg)"/>
+  <g fill="none" opacity=".42" stroke="#fff7ec" stroke-width="1.5">
+    <path d="M90 120h1020M90 240h1020M90 360h1020M90 480h1020M90 600h1020M90 720h1020"/>
+    <path d="M170 70v720M330 70v720M490 70v720M650 70v720M810 70v720M970 70v720"/>
+  </g>
+  <path d="M120 650c154-86 240-102 370-62 126 38 198 10 266-86 82-116 174-174 314-172" fill="none" stroke="url(#route)" stroke-width="22" stroke-linecap="round"/>
+  <path d="M120 650c154-86 240-102 370-62 126 38 198 10 266-86 82-116 174-174 314-172" fill="none" stroke="#fffaf2" stroke-width="4" stroke-linecap="round" opacity=".7"/>
+  <g transform="translate(970 252)">
+    <path d="M90 0c50 0 90 40 90 90 0 76-90 184-90 184S0 166 0 90C0 40 40 0 90 0z" fill="#c8a065"/>
+    <circle cx="90" cy="90" r="34" fill="#24161c"/>
+  </g>
+  <g fill="#fffaf2" opacity=".86">
+    <circle cx="128" cy="650" r="14"/>
+    <circle cx="488" cy="588" r="14"/>
+    <circle cx="756" cy="502" r="14"/>
+  </g>
+  <text x="92" y="112" fill="#fffaf2" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700" opacity=".78">NILUFER METRO</text>
+  <text x="774" y="736" fill="#fffaf2" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="800">LOTUS OFIS</text>
+</svg>
