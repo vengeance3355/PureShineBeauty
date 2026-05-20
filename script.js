@@ -1,109 +1,71 @@
-const root = document.documentElement;
 const header = document.querySelector("[data-header]");
-const loader = document.querySelector("[data-loader]");
-const chapters = Array.from(document.querySelectorAll("[data-chapter]"));
-const revealItems = Array.from(document.querySelectorAll("[data-reveal]"));
-const navItems = Array.from(document.querySelectorAll("[data-nav]"));
-const serviceRows = Array.from(document.querySelectorAll(".service-row"));
-const methodSteps = Array.from(document.querySelectorAll(".method-step"));
-const metricCards = Array.from(document.querySelectorAll(".metric-card"));
-const motionMedia = Array.from(document.querySelectorAll(".editorial-visual figure, .route-visual, .proof-visual"));
+const menu = document.querySelector("[data-menu]");
+const menuToggle = document.querySelector("[data-menu-toggle]");
+const revealItems = Array.from(document.querySelectorAll(".fade-in-up"));
+const navLinks = Array.from(document.querySelectorAll(".site-nav a"));
+const form = document.querySelector("[data-appointment-form]");
+const formStatus = document.querySelector("[data-form-status]");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-const state = {
-  progress: 0,
-  activeStage: 0
-};
-
-let scrollTicking = false;
-let loaderClosed = false;
-
-if (!reducedMotion) root.classList.add("can-animate");
-
-function clamp(value, min = 0, max = 1) {
-  return Math.min(max, Math.max(min, value));
+function setHeaderState() {
+  if (!header) return;
+  header.classList.toggle("is-scrolled", window.scrollY > 42);
 }
 
-function proximityToViewport(element, focus = 0.58, strength = 1.55) {
-  const rect = element.getBoundingClientRect();
-  const center = (rect.top + rect.height / 2) / window.innerHeight;
-  return clamp(1 - Math.abs(center - focus) * strength);
-}
+function setActiveNav() {
+  const sections = navLinks
+    .map((link) => {
+      const id = link.getAttribute("href");
+      if (!id || !id.startsWith("#")) return null;
+      const section = document.querySelector(id);
+      return section ? { link, section } : null;
+    })
+    .filter(Boolean);
 
-function setLoaded() {
-  if (loaderClosed) return;
-  loaderClosed = true;
-  document.body.classList.add("is-loaded");
-  if (loader) loader.setAttribute("aria-hidden", "true");
-}
-
-function updateActiveNav(stage) {
-  navItems.forEach((item) => {
-    item.classList.toggle("is-active", Number(item.dataset.nav) === stage);
-  });
-}
-
-function updateDomMotion() {
-  if (reducedMotion) return;
-
-  serviceRows.forEach((row, index) => {
-    const active = proximityToViewport(row, 0.58, 1.5);
-    const direction = index % 2 === 0 ? -1 : 1;
-    row.style.setProperty("--slide", `${(direction * active * 18).toFixed(2)}px`);
-  });
-
-  methodSteps.forEach((item, index) => {
-    const active = proximityToViewport(item, 0.6, 1.6);
-    item.style.setProperty("--lift", `${(-24 * active + index * 2).toFixed(2)}px`);
-  });
-
-  metricCards.forEach((item, index) => {
-    const active = proximityToViewport(item, 0.6, 1.7);
-    item.style.setProperty("--lift", `${(-22 * active + index * 2).toFixed(2)}px`);
-  });
-
-  motionMedia.forEach((item, index) => {
-    const active = proximityToViewport(item, 0.52, 1.2);
-    item.style.setProperty("--media-lift", `${(-30 * active + index * 2).toFixed(2)}px`);
-  });
-}
-
-function updateScrollState() {
-  const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-  state.progress = clamp(window.scrollY / max);
-  root.style.setProperty("--scroll", state.progress.toFixed(4));
-
-  if (header) header.classList.toggle("is-scrolled", window.scrollY > 30);
-
-  let nearestStage = 0;
-  let nearestDistance = Infinity;
-  chapters.forEach((chapter, index) => {
-    const rect = chapter.getBoundingClientRect();
-    const distance = Math.abs(rect.top + rect.height / 2 - window.innerHeight / 2);
-    if (distance < nearestDistance) {
-      nearestDistance = distance;
-      nearestStage = index;
+  let active = null;
+  let closest = Infinity;
+  sections.forEach(({ link, section }) => {
+    const rect = section.getBoundingClientRect();
+    const distance = Math.abs(rect.top - 130);
+    if (rect.top < window.innerHeight * 0.75 && distance < closest) {
+      active = link;
+      closest = distance;
     }
   });
 
-  state.activeStage = nearestStage;
-  root.style.setProperty("--stage", nearestStage);
-  updateActiveNav(nearestStage);
-  updateDomMotion();
+  navLinks.forEach((link) => link.classList.toggle("is-active", link === active));
 }
 
-function requestScrollUpdate() {
-  if (scrollTicking) return;
-  scrollTicking = true;
-  requestAnimationFrame(() => {
-    scrollTicking = false;
-    updateScrollState();
+function closeMenu() {
+  if (!menu || !menuToggle) return;
+  menu.classList.remove("is-open");
+  menuToggle.setAttribute("aria-expanded", "false");
+  document.body.classList.remove("nav-open");
+  const icon = menuToggle.querySelector(".material-symbols-outlined");
+  if (icon) icon.textContent = "menu";
+}
+
+function initMenu() {
+  if (!menu || !menuToggle) return;
+
+  menuToggle.addEventListener("click", () => {
+    const open = !menu.classList.contains("is-open");
+    menu.classList.toggle("is-open", open);
+    menuToggle.setAttribute("aria-expanded", String(open));
+    document.body.classList.toggle("nav-open", open);
+    const icon = menuToggle.querySelector(".material-symbols-outlined");
+    if (icon) icon.textContent = open ? "close" : "menu";
+  });
+
+  navLinks.forEach((link) => link.addEventListener("click", closeMenu));
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeMenu();
   });
 }
 
 function initReveal() {
   if (reducedMotion || !("IntersectionObserver" in window)) {
-    revealItems.forEach((item) => item.classList.add("is-visible"));
+    revealItems.forEach((item) => item.classList.add("visible"));
     return;
   }
 
@@ -111,177 +73,117 @@ function initReveal() {
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
-        const delay = entry.target.dataset.revealDelay;
-        if (delay) entry.target.style.setProperty("--delay", `${delay}ms`);
-        entry.target.classList.add("is-visible");
+        entry.target.classList.add("visible");
         observer.unobserve(entry.target);
       });
     },
-    { threshold: 0.13, rootMargin: "0px 0px -8% 0px" }
+    { threshold: 0.14, rootMargin: "0px 0px -48px 0px" }
   );
 
   revealItems.forEach((item) => observer.observe(item));
-  requestAnimationFrame(() => {
-    revealItems.forEach((item) => {
-      const rect = item.getBoundingClientRect();
-      if (rect.top < window.innerHeight * 0.94 && rect.bottom > 0) item.classList.add("is-visible");
+}
+
+function setStatus(message, type = "") {
+  if (!formStatus) return;
+  formStatus.textContent = message;
+  formStatus.classList.toggle("is-error", type === "error");
+  formStatus.classList.toggle("is-success", type === "success");
+}
+
+function formToPayload(target) {
+  const data = new FormData(target);
+  return {
+    name: String(data.get("name") || "").trim(),
+    phone: String(data.get("phone") || "").trim(),
+    service: String(data.get("service") || "").trim(),
+    message: String(data.get("message") || "").trim(),
+    consent: data.get("consent") === "on"
+  };
+}
+
+function buildWhatsappUrl(payload) {
+  const lines = [
+    "Merhaba Pure Shine, randevu almak istiyorum.",
+    `Ad Soyad: ${payload.name}`,
+    `Telefon: ${payload.phone}`,
+    payload.service ? `Hizmet: ${payload.service}` : "",
+    payload.message ? `Not: ${payload.message}` : ""
+  ].filter(Boolean);
+  return `https://wa.me/905073776722?text=${encodeURIComponent(lines.join("\n"))}`;
+}
+
+function validatePayload(payload) {
+  const digits = payload.phone.replace(/\D/g, "");
+  if (payload.name.length < 2) return "Lütfen ad soyad bilgisini yazın.";
+  if (digits.length < 10) return "Lütfen geçerli bir telefon numarası yazın.";
+  if (!payload.consent) return "Randevu isteği için iletişim iznini onaylamanız gerekiyor.";
+  return "";
+}
+
+async function submitAppointment(event) {
+  event.preventDefault();
+  const payload = formToPayload(event.currentTarget);
+  const error = validatePayload(payload);
+  if (error) {
+    setStatus(error, "error");
+    return;
+  }
+
+  const submitButton = event.currentTarget.querySelector("button[type='submit']");
+  if (submitButton) submitButton.disabled = true;
+  setStatus("Randevu isteği gönderiliyor...");
+
+  try {
+    const response = await fetch("/api/appointments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
     });
-  });
+
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.ok) {
+      throw new Error(result.error || "Form backend'i yanıt vermedi.");
+    }
+
+    event.currentTarget.reset();
+    setStatus("Randevu isteğiniz alındı. Ekip en kısa sürede dönüş yapacak.", "success");
+  } catch (submitError) {
+    const whatsappUrl = buildWhatsappUrl(payload);
+    setStatus("Backend şu an kullanılamıyor. WhatsApp ile göndermek için yönlendiriliyorsunuz.", "error");
+    window.setTimeout(() => {
+      window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+    }, 500);
+  } finally {
+    if (submitButton) submitButton.disabled = false;
+  }
 }
 
-function initGsapEnhancements() {
-  if (reducedMotion || !window.gsap || !window.ScrollTrigger) return;
-
-  window.gsap.registerPlugin(window.ScrollTrigger);
-
-  window.gsap.utils.toArray(".section-title, .contact-copy, .location-card").forEach((block) => {
-    window.gsap.fromTo(
-      block,
-      { y: 40 },
-      {
-        y: 0,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: block,
-          start: "top 84%",
-          end: "top 45%",
-          scrub: 0.7
-        }
-      }
-    );
-  });
-
-  window.gsap.utils.toArray(".editorial-visual figure, .services-aside, .route-visual, .proof-visual").forEach((item) => {
-    window.gsap.fromTo(
-      item,
-      { scale: 0.965 },
-      {
-        scale: 1,
-        ease: "none",
-        scrollTrigger: {
-          trigger: item,
-          start: "top 92%",
-          end: "center 46%",
-          scrub: true
-        }
-      }
-    );
-  });
-
-  window.addEventListener("load", () => window.ScrollTrigger.refresh());
+function initForm() {
+  if (!form) return;
+  form.addEventListener("submit", submitAppointment);
 }
 
-function initParticles() {
-  const target = document.getElementById("particles-js");
-  if (!target || !window.particlesJS) return;
-
-  const mobile = window.innerWidth < 760;
-  const particleCount = reducedMotion ? (mobile ? 18 : 28) : (mobile ? 46 : 90);
-  const particleSpeed = reducedMotion ? 0.4 : (mobile ? 1.35 : 2.2);
-
-  window.particlesJS("particles-js", {
-    particles: {
-      number: {
-        value: particleCount,
-        density: {
-          enable: true,
-          value_area: mobile ? 540 : 920
-        }
-      },
-      color: {
-        value: ["#c8a065", "#c65d7c", "#587468", "#fff8ef"]
-      },
-      shape: {
-        type: "circle",
-        stroke: {
-          width: 0,
-          color: "#000000"
-        }
-      },
-      opacity: {
-        value: reducedMotion ? 0.22 : 0.36,
-        random: true,
-        anim: {
-          enable: !reducedMotion,
-          speed: 0.45,
-          opacity_min: 0.08,
-          sync: false
-        }
-      },
-      size: {
-        value: mobile ? 1.55 : 2.05,
-        random: true,
-        anim: {
-          enable: false,
-          speed: 0,
-          size_min: 0.4,
-          sync: false
-        }
-      },
-      line_linked: {
-        enable: true,
-        distance: mobile ? 112 : 152,
-        color: "#c8a065",
-        opacity: mobile ? 0.12 : 0.18,
-        width: 1
-      },
-      move: {
-        enable: !reducedMotion,
-        speed: particleSpeed,
-        direction: "none",
-        random: true,
-        straight: false,
-        out_mode: "out",
-        bounce: false,
-        attract: {
-          enable: false,
-          rotateX: 600,
-          rotateY: 1200
-        }
-      }
-    },
-    interactivity: {
-      detect_on: "canvas",
-      events: {
-        onhover: {
-          enable: false,
-          mode: "grab"
-        },
-        onclick: {
-          enable: false,
-          mode: "push"
-        },
-        resize: true
-      },
-      modes: {
-        grab: {
-          distance: 120,
-          line_linked: {
-            opacity: 0.16
-          }
-        },
-        push: {
-          particles_nb: 0
-        }
-      }
-    },
-    retina_detect: true
+let scrollTicking = false;
+function requestScrollUpdate() {
+  if (scrollTicking) return;
+  scrollTicking = true;
+  window.requestAnimationFrame(() => {
+    scrollTicking = false;
+    setHeaderState();
+    setActiveNav();
   });
 }
 
 function init() {
+  initMenu();
   initReveal();
-  initParticles();
-  initGsapEnhancements();
-  updateScrollState();
-  setLoaded();
-
+  initForm();
+  setHeaderState();
+  setActiveNav();
   window.addEventListener("scroll", requestScrollUpdate, { passive: true });
   window.addEventListener("resize", requestScrollUpdate);
-  window.addEventListener("load", () => {
-    setLoaded();
-    updateScrollState();
-  });
 }
 
 init();
