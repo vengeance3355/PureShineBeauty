@@ -516,25 +516,6 @@ p {
   font-size: 18px;
 }
 
-.compact-services {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 24px;
-}
-
-.compact-services span {
-  border: 1px solid rgba(230, 193, 131, 0.28);
-  border-radius: 999px;
-  padding: 10px 14px;
-  color: var(--on-surface-variant);
-  font-family: Geist, Arial, sans-serif;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
 .review-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
