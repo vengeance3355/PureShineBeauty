@@ -701,22 +701,6 @@ p {
   resize: vertical;
 }
 
-.consent {
-  grid-template-columns: auto 1fr;
-  align-items: start;
-  gap: 10px;
-  color: var(--on-surface-variant);
-  font-family: "Source Serif Four", Georgia, serif;
-  font-size: 0.95rem;
-}
-
-.consent input {
-  width: 18px;
-  height: 18px;
-  margin-top: 3px;
-  accent-color: var(--primary);
-}
-
 .form-submit {
   width: 100%;
   border: 0;

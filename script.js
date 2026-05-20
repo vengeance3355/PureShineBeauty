@@ -96,8 +96,7 @@ function formToPayload(target) {
     name: String(data.get("name") || "").trim(),
     phone: String(data.get("phone") || "").trim(),
     service: String(data.get("service") || "").trim(),
-    message: String(data.get("message") || "").trim(),
-    consent: data.get("consent") === "on"
+    message: String(data.get("message") || "").trim()
   };
 }
 
@@ -116,7 +115,6 @@ function validatePayload(payload) {
   const digits = payload.phone.replace(/\D/g, "");
   if (payload.name.length < 2) return "Lütfen ad soyad bilgisini yazın.";
   if (digits.length < 10) return "Lütfen geçerli bir telefon numarası yazın.";
-  if (!payload.consent) return "Randevu isteği için iletişim iznini onaylamanız gerekiyor.";
   return "";
 }
 
@@ -151,7 +149,7 @@ async function submitAppointment(event) {
     setStatus("Randevu isteğiniz alındı. Ekip en kısa sürede dönüş yapacak.", "success");
   } catch (submitError) {
     const whatsappUrl = buildWhatsappUrl(payload);
-    setStatus("Backend şu an kullanılamıyor. WhatsApp ile göndermek için yönlendiriliyorsunuz.", "error");
+    setStatus("WhatsApp açılıyor...", "success");
     window.setTimeout(() => {
       window.open(whatsappUrl, "_blank", "noopener,noreferrer");
     }, 500);

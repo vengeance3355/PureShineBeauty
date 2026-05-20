@@ -72,14 +72,12 @@ function validateAppointment(input) {
     name: cleanText(input.name, 120),
     phone: cleanText(input.phone, 60),
     service: cleanText(input.service, 120),
-    message: cleanText(input.message, 1200),
-    consent: input.consent === true
+    message: cleanText(input.message, 1200)
   };
 
   const phoneDigits = appointment.phone.replace(/\D/g, "");
   if (appointment.name.length < 2) return { error: "Ad soyad bilgisi eksik." };
   if (phoneDigits.length < 10) return { error: "Telefon numarası geçersiz." };
-  if (!appointment.consent) return { error: "İletişim izni gerekli." };
   return { appointment };
 }
 
